@@ -17,7 +17,7 @@ export const countries = pgTable(
   "countries",
   {
     id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
+    name: varchar("name", { length: 256 }).notNull(),
   },
   (countries) => {
     return {
@@ -26,8 +26,21 @@ export const countries = pgTable(
   }
 );
 
-export const cities = pgTable("cities", {
+export const constituentCountries = pgTable("constituent_countries", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 256 }),
-  countryId: integer("country_id").references(() => countries.id),
+  countryId: integer("country_id")
+    .references(() => countries.id)
+    .notNull(),
+});
+
+export const cities = pgTable("cities", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 256 }).notNull(),
+  countryId: integer("country_id")
+    .references(() => countries.id)
+    .notNull(),
+  constituentCountryId: integer("constituent_country_id").references(
+    () => constituentCountries.id
+  ),
 });

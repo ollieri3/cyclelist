@@ -78,10 +78,16 @@ const cities = [
 console.log("Inserting Cities");
 
 for (const city of cities) {
-  await db.insert(schema.cities).values({
-    name: city,
-    countryId: 1, // 1 is UK
-  });
+  await db
+    .insert(schema.cities)
+    .values({
+      name: city,
+      countryId: 1, // 1 is UK,
+      constituentCountryId: 1, // 1 is England
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 }
 
 console.log("Done");
